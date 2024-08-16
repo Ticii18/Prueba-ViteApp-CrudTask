@@ -2,6 +2,7 @@ import './style.css';
 
 const taskForm = document.getElementById('taskForm');
 const taskList = document.getElementById('taskList');
+const errorMessages = document.getElementById('errorMessages');
 
 // Función para mostrar las tareas en el UL
 function displayTasks(tasks) {
@@ -9,10 +10,10 @@ function displayTasks(tasks) {
     tasks.forEach(task => {
         const li = document.createElement('li');
         li.innerHTML = `
-      <span>${task.title} - ${task.description} - ${task.isComplete ? 'Completada' : 'Pendiente'}</span>
-      <button class="edit-btn" onclick="editTask(${task.id})">Editar</button>
-      <button class="delete-btn" onclick="deleteTask(${task.id})">Eliminar</button>
-    `;
+            <span>${task.title} - ${task.description} - ${task.isComplete ? 'Completada' : 'Pendiente'}</span>
+            <button class="edit-btn" onclick="editTask(${task.id})">Editar</button>
+            <button class="delete-btn" onclick="deleteTask(${task.id})">Eliminar</button>
+        `;
         taskList.appendChild(li);
     });
 }
@@ -38,7 +39,6 @@ taskForm.addEventListener('submit', async (e) => {
         isComplete: document.getElementById('completed').checked,
     };
 
-    console.log('Adding task:', taskData);
 
     try {
         const response = await fetch("http://localhost:3000/api/tasks", {
@@ -49,16 +49,23 @@ taskForm.addEventListener('submit', async (e) => {
             body: JSON.stringify(taskData)
         });
 
-        const data = await response.json();
-
-        if (data.errors) {
-            alert('Errores en los datos: ' + data.errors.map(e => e.msg).join(', '));
+        if (!response.ok) {
+            const errorData = await response.json();
+            if (errorData.errors) {
+                // Mostrar errores de validación
+                errorMessages.innerHTML = 'Errores en los datos: '+ 'Los caracteres deben ser superior a 5 y con un maximo de 255 ';
+            } else {
+                throw new Error(`Error ${response.status}: ${errorData.error}`);
+            }
         } else {
+            const data = await response.json();
+            console.log(data.message);
             fetchTasks(); // Recargar la lista de tareas
             taskForm.reset(); // Limpiar el formulario
+            errorMessages.innerHTML = ''; // Limpiar mensajes de error
         }
     } catch (error) {
-        console.error('Error al agregar la tarea:', error);
+        console.error('Error al agregar la tarea:', error.message);
     }
 });
 
@@ -71,11 +78,17 @@ window.deleteTask = async function (id) {
             method: 'DELETE'
         });
 
-        const data = await response.json();
-        console.log(data.message);
-        fetchTasks(); // Recargar la lista de tareas
+        if (!response.ok) {
+            const errorData = await response.json();
+            errorMessages.innerHTML = 'Error al eliminar la tarea: ' + errorData.error;
+        } else {
+            const data = await response.json();
+            console.log(data.message);
+            fetchTasks(); // Recargar la lista de tareas
+            errorMessages.innerHTML = ''; // Limpiar mensajes de error
+        }
     } catch (error) {
-        console.error('Error al eliminar la tarea:', error);
+        console.error('Error al eliminar la tarea:', error.message);
     }
 };
 
@@ -99,7 +112,7 @@ window.editTask = async function (id) {
             updateTask(id);
         };
     } catch (error) {
-        console.error('Error al obtener la tarea:', error);
+        console.error('Error al obtener la tarea para editar:', error);
     }
 };
 
@@ -111,8 +124,6 @@ async function updateTask(id) {
         isComplete: document.getElementById('completed').checked,
     };
 
-    console.log('Updating task with ID:', id, taskData);
-
     try {
         const response = await fetch(`http://localhost:3000/api/tasks/${id}`, {
             method: 'PUT',
@@ -122,20 +133,31 @@ async function updateTask(id) {
             body: JSON.stringify(taskData)
         });
 
-        const data = await response.json();
-        console.log(data.message);
-        fetchTasks(); // Recargar la lista de tareas
-        taskForm.reset(); // Limpiar el formulario
+        if (!response.ok) {
+            const errorData = await response.json();
+            if (errorData.errors) {
+                // Mostrar errores de validación
+                errorMessages.innerHTML = 'Errores en los datos: ' + errorData.errors.map(e => e.msg).join(', ');
+            } else {
+                throw new Error(`Error ${response.status}: ${errorData.error}`);
+            }
+        } else {
+            const data = await response.json();
+            console.log(data.message);
+            fetchTasks(); // Recargar la lista de tareas
+            taskForm.reset(); // Limpiar el formulario
 
-        // Restaurar el botón de submit a su funcionalidad original
-        const submitButton = taskForm.querySelector('button[type="submit"]');
-        submitButton.textContent = 'Agregar Tarea';
-        taskForm.onsubmit = function (e) {
-            e.preventDefault();
-            addTask();
-        };
+            // Restaurar el botón de submit
+            const submitButton = taskForm.querySelector('button[type="submit"]');
+            submitButton.textContent = 'Agregar Tarea';
+            taskForm.onsubmit = function (e) {
+                e.preventDefault();
+                addTask();
+            };
+            errorMessages.innerHTML = ''; // Limpiar mensajes de error
+        }
     } catch (error) {
-        console.error('Error al actualizar la tarea:', error);
+        console.error('Error al actualizar la tarea:', error.message);
     }
 }
 
