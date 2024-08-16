@@ -1,0 +1,131 @@
+:root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+:root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 20px;
+  color: rgba(255, 255, 255, 0.87); /* Mantener consistencia con el color de texto base */
+  background-color: #242424; /* Color de fondo base */
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 800px;
+  margin: auto;
+}
+
+.form-container, .task-list-container {
+  background-color: #333333; /* Fondo más oscuro para armonizar con el esquema de color base */
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 48%;
+  color: rgba(255, 255, 255, 0.87); /* Color de texto consistente */
+}
+
+h2 {
+  margin-top: 0;
+  color: #ffffff; /* Texto más claro para encabezados */
+}
+
+form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+form input, form textarea, form button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  background-color: #444444; /* Fondo oscuro para inputs y textarea */
+  color: #ffffff; /* Color de texto claro */
+}
+
+form button {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #218838;
+}
+
+.task-list-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.task-list-container li {
+  background-color: #444444; /* Fondo oscuro para tareas */
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #ffffff; /* Texto claro para las tareas */
+}
+
+.task-list-container li span {
+  flex-grow: 1;
+}
+
+.task-list-container li button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.task-list-container li .edit-btn {
+  background-color: #ffc107;
+  color: #242424; /* Texto oscuro para contraste */
+}
+
+.task-list-container li .delete-btn {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.task-list-container li .edit-btn:hover {
+  background-color: #e0a800;
+}
+
+.task-list-container li .delete-btn:hover {
+  background-color: #c82333;
+}

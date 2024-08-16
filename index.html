@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="form-container">
+          <h2>Agregar Tarea</h2>
+          <form id="taskForm">
+              <label for="title">Título:</label>
+              <input type="text" id="title" name="title" required>
+              
+              <label for="description">Descripción:</label>
+              <textarea id="description" name="description" required></textarea>
+              
+              <label for="completed">¿Completada?</label>
+              <input type="checkbox" id="completed" name="completed">
+              
+              <button type="submit">Agregar Tarea</button>
+          </form>
+      </div>
+
+      <div class="task-list-container">
+          <h2>Tareas</h2>
+          <ul id="taskList">
+          </ul>
+      </div>
+  </div>
+
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
